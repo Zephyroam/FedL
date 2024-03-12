@@ -20,7 +20,7 @@ def main(args, dataset, algorithm, model, batch_size, lr, beta, lamda, num_glob_
 
     # Get device status: Check GPU or CPU
     device = torch.device("cuda:{}".format(gpu) if torch.cuda.is_available() and gpu != -1 else "cpu")
-    path = './results/{}/{}/{}/{}/{}_{}_{}_{}_{}/'.format(dataset, model, aggr_method, algorithm, generation, individual, gamma, topk, ea_alg, q)
+    path = './results/{}/{}/{}/{}/{}_{}_{}_{}_{}_{}/'.format(dataset, model, aggr_method, algorithm, generation, individual, gamma, topk, ea_alg, q)
     logger = Log(path, 'log').getlog()
     print_log(args, logger)
     for i in range(times):
