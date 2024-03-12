@@ -19,12 +19,14 @@ def get_log_name(prefix, i):
 def get_label(path):
     data = path.split('/')[4:-1]
     aggr_method, algorithm = data[0], data[1]
-    generation, individual, gamma, topk, ea_alg = data[2].split('_')
+    generation, individual, gamma, topk, ea_alg, q = data[2].split('_')
     res = '{}_{}'.format(aggr_method, algorithm)
     if aggr_method == 'ParetoFed':
         res = '{}_{}_{}_{}_{}'.format(res, generation, individual, topk, ea_alg)
     elif aggr_method == 'MtoSFed':
         res = '{}_{}'.format(res, gamma)
+    elif aggr_method == 'qFFedAvg':
+        res = '{}_{}'.format(res, q)
     return res
 
 def simple_read_data(name, path='./results/'):

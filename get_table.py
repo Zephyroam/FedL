@@ -7,8 +7,8 @@ import os
 from utils.plot_utils import *
 import torch
 
-def get_path(dataset, model, aggr_method, algorithm, generation, individual, gamma, topk, ea_alg):
-    path = './results/{}/{}/{}/{}/{}_{}_{}_{}_{}/'.format(dataset, model, aggr_method, algorithm, generation, individual, gamma, topk, ea_alg)
+def get_path(dataset, model, aggr_method, algorithm, generation, individual, gamma, topk, ea_alg, q):
+    path = './results/{}/{}/{}/{}/{}_{}_{}_{}_{}_{}/'.format(dataset, model, aggr_method, algorithm, generation, individual, gamma, topk, ea_alg, q)
     return path
 
 def get_average(data, length, end):
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     parser.add_argument("--length", type=int, default=100)
     parser.add_argument("--end", type=int, default=999, help="end")
     parser.add_argument("--ea-algs", nargs='+', type=str, default=['nsga2'], choices=["nsga2", "awga", "moead", "nsga3", "rvea"], help="EA algorithm")
-    parser.add_argument("--q", type=float, default=1, help="q parameter for qFFedAvg")
+    parser.add_argument("--qs", type=float, nargs='+', default=[1], help="q parameter for qFFedAvg")
     args = parser.parse_args()
 
     print("=" * 80)
@@ -68,32 +68,33 @@ if __name__ == "__main__":
     print("length: {}".format(args.length))
     print("end: {}".format(args.end))
     print("EA algorithm: {}".format(args.ea_algs))
-    print("q: {}".format(args.q))
+    print("q: {}".format(args.qs))
     print("=" * 80)
 
     for model in args.models:
         paths = []
         for algorithm in args.algorithms_list:
             if 'Average' in args.aggrs:
-                path = get_path(args.dataset, model, 'Average', algorithm, 50, 20, 0.1, 2, 'nsga2')
+                path = get_path(args.dataset, model, 'Average', algorithm, 50, 20, 0.1, 2, 'nsga2', 1)
                 paths.append(path)
             if 'MtoSFed' in args.aggrs:
                 for gamma in args.gammas:
-                    path = get_path(args.dataset, model, 'MtoSFed', algorithm, 50, 20, gamma, 2, 'nsga2')
+                    path = get_path(args.dataset, model, 'MtoSFed', algorithm, 50, 20, gamma, 2, 'nsga2', 1)
                     paths.append(path)
             if 'ParetoFed' in args.aggrs:
                 for generation in args.generations:
                     for individual in args.individuals:
                         for topk in args.topks:
                             for ea_alg in args.ea_algs:
-                                path = get_path(args.dataset, model, 'ParetoFed', algorithm, generation, individual, 0.1, topk, ea_alg)
+                                path = get_path(args.dataset, model, 'ParetoFed', algorithm, generation, individual, 0.1, topk, ea_alg, 1)
                                 paths.append(path)
             if 'AFL' in args.aggrs:
-                path = get_path(args.dataset, model, 'AFL', algorithm, 50, 20, 0.1, 2, 'nsga2')
+                path = get_path(args.dataset, model, 'AFL', algorithm, 50, 20, 0.1, 2, 'nsga2', 1)
                 paths.append(path)
             if 'qFFedAvg' in args.aggrs:
-                path = get_path(args.dataset, model, 'qFFedAvg', algorithm, 50, 20, 0.1, 2, 'nsga2')
-                paths.append(path)
+                for q in args.qs:
+                    path = get_path(args.dataset, model, 'qFFedAvg', algorithm, 50, 20, 0.1, 2, 'nsga2', q)
+                    paths.append(path)
         log_name_prefix = get_log_name_prefix(args.batch_size, args.lr, args.beta, args.lamda, args.local_epochs, args.numusers)
         get_tabel(log_name_prefix, args.num_global_iters, args.dataset, model, args.length, args.end, paths)
 
