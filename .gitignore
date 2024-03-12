@@ -1,0 +1,22 @@
+data/cifar-10-python.tar.gz
+data/cifar-10-batches-py
+scripts/*.py
+__pycache__/
+*.py[cod]
+*$py.class
+
+data/Mnist/data/test
+data/Mnist/data/train
+models/Mnist/server.pt
+data/Mnist/data/openml
+results
+Pareto Front Plot.svg
+doc
+pics
+data/Cifar10/data/train
+data/Cifar10/data/test
+get_plot_local.py
+*.pdf
+__MACOSX/
+*.DS_Store
+*.zip
