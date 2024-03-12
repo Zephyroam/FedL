@@ -32,7 +32,7 @@ class Server:
         self.aggregation_method = aggregation_method
         self.topk = topk
         self.aggregation = aggregation.get_aggr_method(aggregation_method, num_glob_iters, device, algorithm, model[0], num_users, self.total_users, lr, generation, individual, gamma, topk, per, logger, ea_alg, q)
-        self.path = './results/{}/{}/{}/{}/{}_{}_{}_{}_{}/'.format(dataset, model[1], aggregation_method, algorithm, generation, individual, gamma, topk, ea_alg)
+        self.path = './results/{}/{}/{}/{}/{}_{}_{}_{}_{}_{}/'.format(dataset, model[1], aggregation_method, algorithm, generation, individual, gamma, topk, ea_alg, q)
         self.logger = logger
         
     def send_parameters(self):
