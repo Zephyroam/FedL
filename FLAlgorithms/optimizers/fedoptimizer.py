@@ -17,9 +17,9 @@ class MySGD(Optimizer):
                     continue
                 d_p = p.grad.data
                 if(beta != 0):
-                    p.data.add_(-beta, d_p)
+                    p.data.add_(d_p, alpha=-beta)
                 else:
-                    p.data.add_(-group['lr'], d_p)
+                    p.data.add_(d_p, alpha=-group['lr'])
         return loss
 
 
