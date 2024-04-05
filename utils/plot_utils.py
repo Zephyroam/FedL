@@ -46,8 +46,8 @@ def get_avg_training_log(log_name_prefix, num_glob_iters, paths=['./results/']):
     for i in range(times):
         try:
             train_acc[i, :], train_loss[i, :], glob_acc[i, :], glob_std[i, :] = np.array(simple_read_data(get_log_name(log_name_prefix, "avg"), paths[i]))[:, :num_glob_iters]
-        except:
-            print("{} does not exist".format(paths[i]))
+        except Exception as e:
+            print(e)
     return glob_acc, glob_std, train_acc, train_loss
 
 def get_all_training_log(log_name_prefix, num_glob_iters, times, path='./results/'):
